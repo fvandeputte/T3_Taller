@@ -39,8 +39,7 @@
             After you sign up, use the following script tag with YOUR_GOOGLE_API_KEY replaced with your actual key.
                 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_API_KEY"></script>
         -->
-          <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyACO5u39SWp5-_2Xmsm-eGNsp75T5sAxiI&callback=init"
-  type="text/javascript"></script>
+        <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js"></script>
         
         <script type="text/javascript">
             // When the window has finished loading create our google map below
@@ -81,9 +80,6 @@
             var contador = 0;
             var cargado_aeropuertos = 0;
             var marker;
-            var infowindow;
-            var abierto_ventana = 0;
-
 
             function changeMarkerPosition(marker, new_position) {
                 var latlng = new google.maps.LatLng(new_position[0], new_position[1]);
@@ -121,31 +117,10 @@
                 for (j = 0; j < len_diccionario; j ++){
                     if (diccionario[j]["key"] == positions["code"]){
                         plot_line(diccionario[j]["value"], positions["position"]);
-                        
-                        encontrado = 1;
-                        changeMarkerPosition(diccionario[j]["marker"], positions["position"]);
-
-                        //ROTACION
-                        var angleDeg = Math.atan2(diccionario[j]["value"][1] - positions["position"][1], diccionario[j]["value"][0] - positions["position"][0]) * 180 / Math.PI;
-
-                        //var angleDeg = Math.atan2(diccionario[j]["value"][1], diccionario[j]["value"][0])
-                        //            - Math.atan2(positions["position"][0], positions["position"][0]);
-
-
-
-                        // if (angleDeg < 0){
-                        //     console.log("Arreglando");
-                        //     angleDeg += 2 * Math.Pi
-                        // }
-                        console.log(angleDeg*180 + 90);
-                        var icon = diccionario[j]["marker"].getIcon();
-                        
-                        //angleDeg = 90;
-                        icon.rotation = angleDeg + 90;
-                        diccionario[j]["marker"].setIcon(icon);
-                        // Aqui trazamos la linea y actualizamos el valor
-                        //var angleDeg = Math.atan2(p2.y - p1.y, p2.x - p1.x) * 180 / Math.PI;
                         diccionario[j]["value"] = positions["position"];
+                        encontrado = 1;
+                        changeMarkerPosition(diccionario[j]["marker"], positions["position"])
+                        // Aqui trazamos la linea y actualizamos el valor
 
   
                         break
@@ -170,23 +145,10 @@
                         anchor: new google.maps.Point(0, 0), // anchor
                         rotation: [90]
                         };
-
-
-                    var plane = {
-                      path: 'M510,255c0-20.4-17.85-38.25-38.25-38.25H331.5L204,12.75h-51l63.75,204H76.5l-38.25-51H0L25.5,255L0,344.25h38.25    l38.25-51h140.25l-63.75,204h51l127.5-204h140.25C492.15,293.25,510,275.4,510,255z',
-                      fillColor: 'green',
-                      fillOpacity: 0.8,
-                      scale: 0.08,
-                      strokeColor: 'green',
-                      strokeWeight: 4,
-                      anchor: new google.maps.Point(0, 150),
-                    };
-                    
-
                     var marker = new google.maps.Marker({
                         position: new google.maps.LatLng(positions["position"][0], positions["position"][1]),
                         map: map,
-                        icon: plane,
+                        icon: icon,
                     });
                     // marker.addListener('click', function() {
                     //   infoFlight.open(map, marker);
@@ -227,13 +189,6 @@
                     position: new google.maps.LatLng(parseFloat(flights[i]["origin"]["airport_position"][0]), parseFloat(flights[i]["origin"]["airport_position"][1])),
                   });
                     AirportOrigin.addListener('click', function() {
-                      if (abierto_ventana == 0){
-                        abierto_ventana = 1;
-                      }
-                      else{
-                        infowindow.close();
-                      }
-                      infowindow = infoAirport;
                       infoAirport.open(map, AirportOrigin);
                     });
 
@@ -261,13 +216,6 @@
                     //radius: 10000
                   });
                     AirportDestination.addListener('click', function() {
-                        if (abierto_ventana == 0){
-                          abierto_ventana = 1;
-                        }
-                        else{
-                          infowindow.close();
-                        }
-                        infowindow = infoAirportDestino;
                       infoAirportDestino.open(map, AirportDestination);
                     });
 
@@ -327,13 +275,6 @@
                 });
                 marker = diccionario[j]["marker"];
                 marker.addListener('click', function() {
-                    if (abierto_ventana == 0){
-                      abierto_ventana = 1;
-                    }
-                    else{
-                      infowindow.close();
-                    }
-                    infowindow = infoFlight;
                     infoFlight.open(map, marker);
                 });
             }
