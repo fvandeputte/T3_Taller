@@ -39,8 +39,7 @@
             After you sign up, use the following script tag with YOUR_GOOGLE_API_KEY replaced with your actual key.
                 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_API_KEY"></script>
         -->
-          <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyACO5u39SWp5-_2Xmsm-eGNsp75T5sAxiI&callback=init"
-  type="text/javascript"></script>
+        <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js"></script>
         
         <script type="text/javascript">
             // When the window has finished loading create our google map below
@@ -81,8 +80,6 @@
             var contador = 0;
             var cargado_aeropuertos = 0;
             var marker;
-            var infowindow;
-            var abierto_ventana = 0;
 
             function changeMarkerPosition(marker, new_position) {
                 var latlng = new google.maps.LatLng(new_position[0], new_position[1]);
@@ -192,13 +189,6 @@
                     position: new google.maps.LatLng(parseFloat(flights[i]["origin"]["airport_position"][0]), parseFloat(flights[i]["origin"]["airport_position"][1])),
                   });
                     AirportOrigin.addListener('click', function() {
-                      if (abierto_ventana == 0){
-                        abierto_ventana = 1;
-                      }
-                      else{
-                        infowindow.close();
-                      }
-                      infowindow = infoAirport;
                       infoAirport.open(map, AirportOrigin);
                     });
 
@@ -226,13 +216,6 @@
                     //radius: 10000
                   });
                     AirportDestination.addListener('click', function() {
-                        if (abierto_ventana == 0){
-                          abierto_ventana = 1;
-                        }
-                        else{
-                          infowindow.close();
-                        }
-                        infowindow = infoAirportDestino;
                       infoAirportDestino.open(map, AirportDestination);
                     });
 
@@ -292,13 +275,6 @@
                 });
                 marker = diccionario[j]["marker"];
                 marker.addListener('click', function() {
-                    if (abierto_ventana == 0){
-                      abierto_ventana = 1;
-                    }
-                    else{
-                      infowindow.close();
-                    }
-                    infowindow = infoFlight;
                     infoFlight.open(map, marker);
                 });
             }
